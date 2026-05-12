@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+<div th:fragment="header">
+
+    <nav class="navbar navbar-dark bg-dark px-3">
+
+        <span class="navbar-brand">
+            SGE - Gestion des Étudiants
+        </span>
+
+        <div class="d-flex align-items-center text-white">
+
+            <!-- 👤 USER CONNECTÉ -->
+            <span class="me-3">
+                👤 <span th:text="${#authentication.name}">user</span>
+            </span>
+
+            <!-- 🔐 BOUTON ADMIN SEULEMENT -->
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+               th:href="@{/notes/form}"
+               class="btn btn-success btn-sm me-2">
+                Ajouter une note
+            </a>
+
+            <!-- 🚪 LOGOUT -->
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-outline-light btn-sm">
+                    Déconnexion
+                </button>
+            </form>
+
+        </div>
+
+    </nav>
+
+</div>
+
+</body>
+</html>

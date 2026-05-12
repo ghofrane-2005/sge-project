@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Bulletins</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Liste des Bulletins</h2>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Groupe</th>
+            <th>Filière</th>
+            <th>Moyenne</th>
+            <th>Mention</th>
+            <th>Statut</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="b : ${bulletins}"
+            th:class="${b.admis} ? 'table-success' : 'table-danger'">
+
+            <td th:text="${b.etudiant.nom}"></td>
+
+            <td th:text="${b.etudiant.prenom}"></td>
+
+            <td th:text="${b.etudiant.groupe}"></td>
+
+            <td th:text="${b.etudiant.filiere.nom}"></td>
+
+            <td th:text="${#numbers.formatDecimal(b.moyenneGenerale,1,2)}"></td>
+
+            <td th:text="${b.mention}"></td>
+
+            <td>
+                <span th:text="${b.admis} ? 'Admis' : 'Ajourné'"></span>
+            </td>
+
+            <td>
+                <a th:href="@{/bulletins/{id}(id=${b.etudiant.id})}"
+                   class="btn btn-primary btn-sm">
+                    Voir bulletin
+                </a>
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Bulletins</title>
+    </head>
+    <body>
+        <h1>Liste des Bulletins</h1>
+        <table border="1">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Groupe</th>
+                <th>Moyenne</th>
+                <th>Mention</th>
+                <th>Statut</th>
+            </tr>
+                <tr th:each="b : ${bulletins}"th:class="${b.admis} ? 'admis' : 'ajourne'">
+                <td th:text="${b.etudiant.nom}"></td>
+                <td th:text="${b.etudiant.prenom}"></td>
+                <td th:text="${b.etudiant.groupe}"></td>
+                <td th:text="${b.moyenneGenerale}"></td>
+                <td th:text="${b.mention}"></td>
+                <td th:text="${b.admis} ? 'ADMIS' : 'AJOURNÉ'"></td>
+            </tr>
+        </table>
+    </body>
+</html>
