@@ -1,133 +1,206 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Bulletin de Notes</title>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+
+        body {
+            font-family: "Times New Roman", serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .bulletin {
+            width: 760px;
+            margin: auto;
+            background: white;
+            border: 1px solid #555;
+            padding: 0;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid #777;
+            padding: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        .header h3 {
+            margin-top: 10px;
+            font-weight: normal;
+        }
+
+        .info {
+            padding: 15px 20px;
+            border-bottom: 1px solid #777;
+        }
+
+        .info p {
+            margin: 8px 0;
+            font-size: 18px;
+        }
+
+        .label {
+            display: inline-block;
+            width: 130px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #777;
+            padding: 8px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        table th {
+            background: #f1f1f1;
+            font-size: 20px;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .footer {
+            border: 1px solid #777;
+            margin: 15px;
+            padding: 15px;
+            font-style: italic;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .admis {
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-<div th:replace="fragments/header :: header"></div>
+<div class="bulletin">
 
-<div class="container mt-4">
+    <div class="header">
+        <h1>BULLETIN DE NOTES</h1>
+        <h3>Année Universitaire 2025 - 2026</h3>
+    </div>
 
-    <h1 class="text-center mb-4">BULLETIN DE NOTES</h1>
-
-    <h5 class="text-center mb-4">
-        Année Universitaire 2025 - 2026
-    </h5>
-
-    <div class="mb-4">
+    <div class="info">
 
         <p>
-            <strong>Étudiant :</strong>
+            <span class="label">Étudiant</span>
+            :
             <span th:text="${bulletin.etudiant.nom}"></span>
             <span th:text="${bulletin.etudiant.prenom}"></span>
         </p>
 
         <p>
-            <strong>Groupe :</strong>
+            <span class="label">Groupe</span>
+            :
             <span th:text="${bulletin.etudiant.groupe}"></span>
         </p>
 
         <p>
-            <strong>Filière :</strong>
+            <span class="label">Filière</span>
+            :
             <span th:text="${bulletin.etudiant.filiere.nom}"></span>
         </p>
 
     </div>
 
-    <table class="table table-bordered">
+    <table>
 
-        <thead class="table-dark">
-
+        <thead>
         <tr>
-            <th>Module</th>
+            <th class="left">Module</th>
             <th>Coefficient</th>
             <th>Note</th>
             <th>Somme</th>
         </tr>
-
         </thead>
 
         <tbody>
 
         <tr th:each="n : ${bulletin.notes}">
 
-            <td th:text="${n.module.nom}"></td>
+            <td class="left" th:text="${n.module.nom}"></td>
 
             <td th:text="${n.module.coefficient}"></td>
 
-            <td th:text="${n.valeur}"></td>
+            <td th:text="${#numbers.formatDecimal(n.valeur,1,2)}"></td>
 
-            <td th:text="${n.valeur * n.module.coefficient}"></td>
+            <td th:text="${#numbers.formatDecimal(n.valeur * n.module.coefficient,1,2)}"></td>
 
         </tr>
 
-        <tr class="table-secondary">
+        <tr>
+            <td class="left bold">Total</td>
 
-            <td><strong>Total</strong></td>
-
-            <td>
-                <strong th:text="${totalCoef}"></strong>
-            </td>
+            <td class="bold" th:text="${totalCoef}"></td>
 
             <td></td>
 
-            <td>
-                <strong th:text="${#numbers.formatDecimal(totalSomme,1,2)}"></strong>
-            </td>
+            <td class="bold"
+                th:text="${#numbers.formatDecimal(totalSomme,1,2)}"></td>
+        </tr>
 
+        <tr>
+            <td colspan="3" class="left bold">Moyenne Générale</td>
+
+            <td class="bold"
+                th:text="${#numbers.formatDecimal(bulletin.moyenneGenerale,1,2)}"></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" class="left bold">Mention</td>
+
+            <td th:text="${bulletin.mention}"></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" class="left bold">Résultat</td>
+
+            <td>
+                <span class="admis"
+                      th:text="${bulletin.admis} ? 'ADMIS' : 'AJOURNÉ'">
+                </span>
+            </td>
         </tr>
 
         </tbody>
 
     </table>
 
-    <div class="mt-4">
-
-        <p>
-            <strong>Moyenne Générale :</strong>
-            <span th:text="${#numbers.formatDecimal(bulletin.moyenneGenerale,1,2)}"></span>
-        </p>
-
-        <p>
-            <strong>Mention :</strong>
-            <span th:text="${bulletin.mention}"></span>
-        </p>
-
-        <p>
-            <strong>Résultat :</strong>
-
-            <span th:text="${bulletin.admis} ? 'ADMIS' : 'AJOURNÉ'"
-                  th:class="${bulletin.admis} ? 'text-success fw-bold' : 'text-danger fw-bold'">
-            </span>
-        </p>
-
+    <div class="footer">
+        Ce bulletin est généré automatiquement par le Système de Gestion des
+        Étudiants (SGE). Il récapitule les notes obtenues au titre de l’année
+        universitaire en cours et est consultable à tout moment via l’interface
+        web du projet.
     </div>
-
-    <div class="alert alert-info mt-4">
-
-        Ce bulletin est généré automatiquement par le
-        Système de Gestion des Étudiants (SGE).
-        Il récapitule les notes obtenues au titre de
-        l’année universitaire en cours et est consultable
-        à tout moment via l’interface web du projet.
-
-    </div>
-
-    <a th:href="@{/bulletins}"
-       class="btn btn-secondary mt-3">
-        Retour vers la liste
-    </a>
 
 </div>
-
-<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

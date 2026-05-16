@@ -3,6 +3,7 @@ package com.example.sge.controller;
 import com.example.sge.dto.BulletinDTO;
 import com.example.sge.model.Etudiant;
 import com.example.sge.model.Note;
+import com.example.sge.repository.EtudiantRepository;
 import com.example.sge.service.EtudiantService;
 import com.example.sge.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,42 @@ public class BulletinController {
     private EtudiantService etudiantService;
 
     @Autowired
+    private EtudiantRepository etudiantRepository;
+
+    @Autowired
     private NoteService noteService;
+
+    @GetMapping("/bulletin/{id}")
+    public String afficherBulletin(@PathVariable Long id, Model model) {
+
+        Etudiant etudiant = etudiantRepository.findById(id).orElse(null);
+
+        List<Note> notes = etudiant.getNotes();
+
+        double total = 0;
+        int coefTotal = 0;
+
+        for(Note n : notes){
+
+            total += n.getValeur() * n.getModule().getCoefficient();
+
+            coefTotal += n.getModule().getCoefficient();
+        }
+
+        double moyenne = total / coefTotal;
+
+        model.addAttribute("etudiant", etudiant);
+        model.addAttribute("notes", notes);
+        model.addAttribute("moyenne", moyenne);
+
+        return "detail";
+    }
+
+
+
+
+
+
 
 
     @GetMapping

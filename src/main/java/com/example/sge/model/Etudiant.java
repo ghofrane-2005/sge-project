@@ -58,4 +58,7 @@ public class Etudiant {
     public Filiere getFiliere()               { return filiere; }
     public void setFiliere(Filiere filiere)   { this.filiere = filiere; }
 
+    public List<Note> getNotes() {
+        return notes;
+    }
 }
