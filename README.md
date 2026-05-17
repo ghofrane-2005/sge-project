@@ -128,7 +128,7 @@ login.html	Page de connexion
 /bulletins/detail.html	Détail d’un bulletin
 ⚙️ Installation & configuration
 1️⃣ Cloner le projet
-git clone https://github.com/your-username/sge-system.git
+git clone https://github.com/ghofrane-2005/sge-system.git
 cd sge-system
 2️⃣ Configurer la base de données
 spring.datasource.url=jdbc:mysql://localhost:3306/sge_db
@@ -157,5 +157,5 @@ Respect des contraintes MySQL
 Sécurité basée sur JWT
 🧑‍💻 Auteur
 
-Amine Lanouar
+Ghofrane hbila
 Projet académique - Système de gestion des étudiants (DSI)
